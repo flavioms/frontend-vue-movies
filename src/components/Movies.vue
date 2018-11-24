@@ -42,12 +42,12 @@ export default {
 
   computed: {
     moviesList() {
-      return this.getByCategory(this.$route.params.category);
+      return this.moviesByCategory(this.$route.params.category);
     },
 
     ...mapState(["movies", "categorys"]),
 
-    ...mapGetters(["getByCategory"])
+    ...mapGetters(["moviesByCategory"])
   }
 };
 </script>

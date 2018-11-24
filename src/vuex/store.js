@@ -56,7 +56,7 @@ export default new Vuex.Store({
   },
 
   getters: {
-    getByCategory: state => genre => {
+    moviesByCategory: state => genre => {
       return state.movies.filter(movie =>
         movie.genre_ids.includes(parseInt(genre))
       )
