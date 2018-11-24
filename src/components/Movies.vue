@@ -42,24 +42,7 @@ export default {
 
   computed: {
     moviesList() {
-      var movies = this.getByCategory(this.$route.params.category);
-
-      movies.map(movie => {
-        movie.categoria = "";
-
-        movie.poster_path_full =
-          "http://image.tmdb.org/t/p/w500" + movie.poster_path;
-
-        movie.genre_ids.forEach(item => {
-          this.categorys.map(cat => {
-            if (cat.id === item) {
-              movie.categoria += `${cat.name}, `;
-            }
-          });
-        });
-      });
-
-      return movies;
+      return this.getByCategory(this.$route.params.category);
     },
 
     ...mapState(["movies", "categorys"]),

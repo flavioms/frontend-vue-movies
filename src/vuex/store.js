@@ -14,24 +14,35 @@ export default new Vuex.Store({
   },
   actions: {
     allMovies ({ commit }) {
-      axios
-        .get('../../static/movieDB.json')
-        .then(r => r.data.results)
-        .then(movies => {
-          commit('SET_MOVIES', movies)
-        })
+      axios.all([
+        axios.get('../../static/categoryDB.json'),
+        axios.get('../../static/movieDB.json')
+      ])
+        .then(axios.spread(function (categoryResponse, moviesResponse) {
+          var categorias = categoryResponse.data.genres
+          var filmes = moviesResponse.data.results
+          var allRequests = [categorias, filmes]
+          commit('SET_MOVIES', allRequests)
+        }))
     },
 
     findMovie ({ commit }, movieid) {
-      axios
-        .get('../../static/movieDB.json')
-        .then(r => {
-          r.data.results.map(movie => {
+      axios.all([
+        axios.get('../../static/categoryDB.json'),
+        axios.get('../../static/movieDB.json')
+      ])
+        .then(axios.spread(function (categoryResponse, moviesResponse) {
+          var categorias = categoryResponse.data.genres
+          var filme
+          moviesResponse.data.results.map(movie => {
             if (movie.id === parseInt(movieid)) {
-              commit('SET_MOVIE', movie)
+              filme = movie
             }
           })
-        })
+
+          var allRequests = [categorias, filme]
+          commit('SET_MOVIE', allRequests)
+        }))
     },
 
     allCategory ({ commit }) {
@@ -53,11 +64,33 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    SET_MOVIE (state, movie) {
+    SET_MOVIE (state, allRequests) {
+      var categorys = allRequests[0]
+      var movie = allRequests[1]
+      movie.categoria = ''
+      movie.poster_path_full = 'http://image.tmdb.org/t/p/w500' + movie.poster_path
+      movie.genre_ids.forEach(item => {
+        categorys.map(cat => {
+          if (cat.id === item) {
+            movie.categoria += `${cat.name}, `
+          }
+        })
+      })
       state.movie = movie
     },
 
-    SET_MOVIES (state, movies) {
+    SET_MOVIES (state, allRequests) {
+      var categorys = allRequests[0]
+      var movies = allRequests[1]
+      movies.map(movie => {
+        movie.categoria = ''
+        movie.poster_path_full = 'http://image.tmdb.org/t/p/w500' + movie.poster_path
+        movie.genre_ids.forEach(item => {
+          categorys.map(cat => {
+            if (cat.id === item) { movie.categoria += `${cat.name}, ` }
+          })
+        })
+      })
       state.movies = movies
     },
 
