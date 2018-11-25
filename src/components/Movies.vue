@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Header class="header" title="MovieApp"></Header>
+    <Header class="header" title="MovieApp" v-on:pesquisar="pesquisar"></Header>
+
     <main class="main">
       <div class="empty-error" v-if="moviesList.length == 0">
         <i class="material-icons icon">error_outline</i>
@@ -34,20 +35,28 @@ export default {
     Card, Header
   },
 
+  data() {
+    return {
+      teste: "testes esdfksmfksmkf"
+    }
+  },
+
   mounted() {
     this.$store.dispatch("allMovies");
-
     this.$store.dispatch("allCategory");
   },
 
   computed: {
+    pesquisar() {
+      if(this.teste){
+        console.log(this.teste);
+      }
+    },
     moviesList() {
       return this.moviesByCategory(this.$route.params.category);
     },
-
     ...mapState(["movies", "categorys"]),
-
-    ...mapGetters(["moviesByCategory"])
+    ...mapGetters(["moviesByCategory", "findMovieByTitle"])
   }
 };
 </script>

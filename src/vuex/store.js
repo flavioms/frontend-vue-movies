@@ -60,6 +60,12 @@ export default new Vuex.Store({
       return state.movies.filter(movie =>
         movie.genre_ids.includes(parseInt(genre))
       )
+    },
+
+    findMovieByTitle: state => title => {
+      return state.movies.filter(movie =>
+        movie.title.includes(title)
+      )
     }
   },
 

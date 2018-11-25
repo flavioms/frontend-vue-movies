@@ -1,8 +1,10 @@
 <template>
   <header class="header-movie">
-    <a href="" class="menu"><i class="material-icons">menu</i></a>
     <h1 class="title">{{title}}</h1>
-    <a href="" class="search"><i class="material-icons">search</i></a>
+    <div class="search">
+      <input v-if="searchView" v-on:keyup.stop="chamarPesquisa" v-model="movieTitle" class="input" type="text">
+      <i class="material-icons" @click="searchView = !searchView">search</i>
+    </div>
 
     <ul class="navbar-movie">
       <router-link :to="/movies/+categoria.id" class="item" v-for="categoria in categorys" :key="categoria.id">{{categoria.name}}</router-link>
@@ -12,15 +14,31 @@
 
 <script>
 import { mapState } from 'vuex';
+import { mapGetters } from "vuex";
 export default {
   name: 'Header',
+  data () {
+    return {
+      searchView: false,
+      movieTitle: ''
+    }
+  },
+  methods: {
+    chamarPesquisa() {
+      this.$emit('pesquisar', {'movieTitle': this.movieTitle});
+    },
+  },
+
   mounted () {
     this.$store.dispatch('allCategory');
   },
+
   props: ['title'],
-  computed: mapState([
-    'categorys'
-  ])
+  computed: {
+    ...mapState(["categorys"]),
+    ...mapGetters(["findMovieByTitle"])
+  }
+    
 }
 </script>
 
@@ -28,10 +46,13 @@ export default {
 .header-movie{
   display: grid;
   position: fixed;
+  overflow: hidden;
+  box-sizing: border-box;
   z-index: 2;
+  grid-template-columns: 1fr auto;
   grid-template-areas: 
-    "menu title search"
-    "navbar navbar navbar";
+    "title search"
+    "navbar navbar";
   height: 150px;
   width: 100vw;
   padding: 16px;
@@ -48,21 +69,34 @@ export default {
     color: rgba(255, 255, 255, 0.9);
   }
 
-  >.menu{
-    grid-area: menu;
-    justify-self: start;
-    color: rgba(255, 255, 255, 0.5);
-  }
-
   >.search{
     grid-area: search;
-    justify-self: end;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
     color: rgba(255, 255, 255, 0.5);
+    
+    .input{
+      background: none;
+      border: none;
+      border-bottom: rgba($color: #fff, $alpha: 0.7) solid 1px;
+      width: 70%;
+      color: white;
+      padding: 0 8px;
+    }
+
+    .input:hover{
+      outline: none;
+    }
+
+    .material-icons{
+      font-size: 26px;
+    }
+
+
   }
   
-  .material-icons{
-    font-size: 26px;
-  }
 
   .navbar-movie{
     grid-area: navbar;

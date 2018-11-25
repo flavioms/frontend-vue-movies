@@ -9,7 +9,9 @@
 
 <script>
 export default {
-  props: ['movie']
+  props: ['movie'],
+  methods: {
+  }
 }
 </script>
 
@@ -47,6 +49,7 @@ export default {
     grid-area: genre;
     justify-self: start;
     color: $color-light-primary;
+    padding-top: 12px;
     font-size: 14px;
     font-weight: 300;
   }
