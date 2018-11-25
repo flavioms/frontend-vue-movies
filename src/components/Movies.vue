@@ -1,20 +1,17 @@
 <template>
   <div>
     <Header class="header" title="MovieApp" v-on:pesquisar="pesquisar"></Header>
-
     <main class="main">
       <div class="empty-error" v-if="moviesList.length == 0">
         <i class="material-icons icon">error_outline</i>
         <h1 class="text">Selecione uma categoria!</h1>
       </div>
-    
-      <ul class="list-card">
-        <li v-for="movie in moviesList" :key="movie.id" v-if="movie.poster_path != null" :to="/movie/+movie.id">
+      <transition-group name="list" tag="p">
+        <li class="list-item" v-for="movie in moviesList" :key="movie.id" v-if="movie.poster_path != null" :to="/movie/+movie.id">
           <Card :movie='movie'/>
         </li>
-      </ul>
+      </transition-group>
     </main>
-
   </div>
 </template>
 
@@ -37,7 +34,7 @@ export default {
 
   data() {
     return {
-      teste: "testes esdfksmfksmkf"
+      titleFind: ""
     }
   },
 
@@ -46,13 +43,17 @@ export default {
     this.$store.dispatch("allCategory");
   },
 
-  computed: {
-    pesquisar() {
-      if(this.teste){
-        console.log(this.teste);
-      }
+  methods: {
+    pesquisar(event) {
+      this.titleFind = event.movieTitle;
     },
+  },
+
+  computed: {
     moviesList() {
+      if(this.titleFind){
+        return this.findMovieByTitle(this.titleFind);
+      }
       return this.moviesByCategory(this.$route.params.category);
     },
     ...mapState(["movies", "categorys"]),
@@ -78,8 +79,15 @@ export default {
   font-size: 2em;
 }
 
-.list-card {
+.list-item {
   padding: 0 16px;
+}
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active em versões anteriores a 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(300px);
 }
 
 </style>

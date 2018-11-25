@@ -1,6 +1,8 @@
 <template>
   <main class="container-movie">
-    <router-view class="body"/>
+    <transition name="fade" mode="out-in">
+      <router-view class="body"/>
+    </transition>
   </main>  
 </template>
 
@@ -18,5 +20,17 @@ export default {
 .container-movie{
   background-color: #09212A;
   height: 100%;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.3s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0
 }
 </style>

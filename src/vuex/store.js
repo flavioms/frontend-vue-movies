@@ -35,11 +35,8 @@ export default new Vuex.Store({
           var categorias = categoryResponse.data.genres
           var filme
           moviesResponse.data.results.map(movie => {
-            if (movie.id === parseInt(movieid)) {
-              filme = movie
-            }
+            if (movie.id === parseInt(movieid)) { filme = movie }
           })
-
           var allRequests = [categorias, filme]
           commit('SET_MOVIE', allRequests)
         }))
@@ -77,9 +74,7 @@ export default new Vuex.Store({
       movie.poster_path_full = 'http://image.tmdb.org/t/p/w500' + movie.poster_path
       movie.genre_ids.forEach(item => {
         categorys.map(cat => {
-          if (cat.id === item) {
-            movie.categoria += `${cat.name}, `
-          }
+          if (cat.id === item) { movie.categoria += `${cat.name}, ` }
         })
       })
       state.movie = movie
