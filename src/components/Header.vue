@@ -1,24 +1,13 @@
 <template>
-  <header class="header-movie">
-  
+  <header class="header-movie">  
     <h1 class="title">{{title}}</h1>
-  
     <div class="search">
-  
       <input v-if="searchView" v-on:keyup.stop="chamarPesquisa" v-model="movieTitle" class="input" type="text">
-  
       <i class="material-icons" @click="searchView = !searchView">search</i>
-  
     </div>
-  
-  
-  
     <ul class="navbar-movie">
-  
       <router-link :to="/movies/+categoria.id" class="item" v-for="categoria in categorys" :key="categoria.id">{{categoria.name}}</router-link>
-  
     </ul>
-  
   </header>
 </template>
 
