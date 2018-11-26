@@ -1,9 +1,11 @@
 <template>
   <router-link :to="/movie/+movie.id" class="card-movie">
     <img class="imagem" :src="movie.poster_path_full">
-    <h1 class="title">{{movie.title}}</h1>
-    <h2 class="genre">{{movie.categoria}}</h2>
-    <h2 class="date">Lançamento: {{movie.release_date}}</h2>
+    <div class="info">
+      <p class="title">{{movie.title}}</p>
+      <p class="genre">{{movie.categoria}}</p>
+      <p class="date">Lançamento: {{movie.release_date}}</p>
+    </div>
   </router-link>
 </template>
 
@@ -15,16 +17,16 @@ export default {
 }
 </script>
 
-
 <style lang="scss">
 @import '../assets/css/Settings/colors.scss';
 .card-movie {
   display: grid;
-  grid-template-columns: 42% auto;
-  grid-template-rows: 35% 40% 25%;
-  grid-template-areas: "poster title" "poster genre" "poster date";
+  grid-template-columns: 9rem 1% auto;
+  grid-template-areas: "poster . info";
   width: 100%;
-  height: 180px;
+  max-height: 180px;
+  height: auto;
+  padding-right: 1.2rem;
   margin-bottom: 3rem;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   background: $color-dark-primary;
@@ -33,32 +35,37 @@ export default {
   > .imagem {
     grid-area: poster;
     position: relative;
-    width: 130px;
-    height: 195px;
+    max-height: 15rem;
+    max-width: 8rem;
+    width: auto;
+    height: auto;
     top: -8px;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   }
+
+  >.info{
+    grid-area: info;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    line-height: 1em;
+
   > .title {
-    grid-area: title;
-    justify-self: start;
-    padding-top: 20px;
-    font-size: 18px;
+    font-size: 1.2em;
     font-weight: 500;
   }
   > .genre {
-    grid-area: genre;
-    justify-self: start;
     color: $color-light-primary;
-    padding-top: 12px;
-    font-size: 14px;
+    font-size: .9em;
     font-weight: 300;
   }
   > .date {
-    grid-area: date;
-    justify-self: start;
     color: $color-light-secundary;
-    font-size: 14px;
+    font-size: .9em;
     font-weight: 400;
+  }
   }
 }
 

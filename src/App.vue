@@ -3,12 +3,12 @@
     <transition name="fade" mode="out-in">
       <router-view class="body"/>
     </transition>
-  </main>  
+  </main>
 </template>
 
 <script>
 export default {
-  name: 'App',
+  name: 'App'
 }
 </script>
 
@@ -18,7 +18,7 @@ export default {
 @import './assets//css//Settings/colors.scss';
 
 .container-movie{
-  background-color: #09212A;
+  background-color: $color-dark-base;
   height: 100%;
 }
 

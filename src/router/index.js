@@ -16,7 +16,7 @@ export default new Router({
     },
     {
       path: '/movies/:category',
-      name: 'Movies',
+      name: 'MoviesCategory',
       component: Movies
     },
     {

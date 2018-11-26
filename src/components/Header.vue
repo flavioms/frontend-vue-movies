@@ -1,9 +1,10 @@
 <template>
-  <header class="header-movie">  
+  <header class="header-movie">
     <h1 class="title">{{title}}</h1>
     <div class="search">
       <input v-if="searchView" v-on:keyup.stop="chamarPesquisa" v-model="movieTitle" class="input" type="text">
-      <i class="material-icons" @click="searchView = !searchView">search</i>
+      <i class="material-icons" v-if="!searchView" @click="searchView = !searchView">search</i>
+      <i class="material-icons" v-if="searchView" @click="searchView = !searchView">close</i>
     </div>
     <ul class="navbar-movie">
       <router-link :to="/movies/+categoria.id" class="item" v-for="categoria in categorys" :key="categoria.id">{{categoria.name}}</router-link>
@@ -12,44 +13,42 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from 'vuex'
 
 export default {
-  name: "Header",
+  name: 'Header',
 
-  data() {
+  data () {
     return {
       searchView: false,
-
-      movieTitle: ""
-    };
-  },
-
-  methods: {
-    chamarPesquisa() {
-      this.$emit("pesquisar", {
-        movieTitle: this.movieTitle
-      });
+      movieTitle: ''
     }
   },
 
-  mounted() {
-    this.$store.dispatch("allCategory");
+  methods: {
+    chamarPesquisa () {
+      this.$emit('pesquisar', {
+        movieTitle: this.movieTitle
+      })
+    }
   },
 
-  props: ["title"],
+  mounted () {
+    this.$store.dispatch('allCategory')
+  },
+
+  props: ['title'],
 
   computed: {
-    ...mapState(["categorys"]),
+    ...mapState(['categorys']),
 
-    ...mapGetters(["findMovieByTitle"])
+    ...mapGetters(['findMovieByTitle'])
   }
-};
+}
 </script>
 
 <style lang="scss">
+@import '../assets/css/Settings/colors.scss';
 .header-movie {
   display: grid;
   position: fixed;
@@ -61,7 +60,7 @@ export default {
   height: 160px;
   width: 100vw;
   padding: 16px;
-  background-color: #010e17;
+  background-color: $color-dark-primary;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 
   > .title {

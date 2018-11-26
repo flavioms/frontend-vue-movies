@@ -6,7 +6,7 @@
         <i class="material-icons icon">error_outline</i>
         <h1 class="text">Selecione uma categoria!</h1>
       </div>
-      <transition-group name="list" tag="p">
+      <transition-group class="list" name="list" tag="p">
         <li class="list-item" v-for="movie in moviesList" :key="movie.id" v-if="movie.poster_path != null" :to="/movie/+movie.id">
           <Card :movie='movie'/>
         </li>
@@ -15,51 +15,45 @@
   </div>
 </template>
 
-
 <script>
-import { mapState } from "vuex";
-
-import { mapGetters } from "vuex";
-
-import Card from './Card';
-
-import Header from './Header';
-
+import { mapState, mapGetters } from 'vuex'
+import Card from './Card'
+import Header from './Header'
 export default {
-  name: "Movies",
+  name: 'Movies',
 
   components: {
     Card, Header
   },
 
-  data() {
+  data () {
     return {
-      titleFind: ""
+      titleFind: ''
     }
   },
 
-  mounted() {
-    this.$store.dispatch("allMovies");
-    this.$store.dispatch("allCategory");
+  mounted () {
+    this.$store.dispatch('allMovies')
+    this.$store.dispatch('allCategory')
   },
 
   methods: {
-    pesquisar(event) {
-      this.titleFind = event.movieTitle;
-    },
+    pesquisar (event) {
+      this.titleFind = event.movieTitle
+    }
   },
 
   computed: {
-    moviesList() {
-      if(this.titleFind){
-        return this.findMovieByTitle(this.titleFind);
+    moviesList () {
+      if (this.titleFind) {
+        return this.findMovieByTitle(this.titleFind)
       }
-      return this.moviesByCategory(this.$route.params.category);
+      return this.moviesByCategory(this.$route.params.category)
     },
-    ...mapState(["movies", "categorys"]),
-    ...mapGetters(["moviesByCategory", "findMovieByTitle"])
+    ...mapState(['movies', 'categorys']),
+    ...mapGetters(['moviesByCategory', 'findMovieByTitle'])
   }
-};
+}
 </script>
 
 <style lang="scss">
@@ -80,6 +74,7 @@ export default {
 }
 
 .list-item {
+  box-sizing: border-box;
   padding: 0 16px;
 }
 .list-enter-active, .list-leave-active {
@@ -88,6 +83,13 @@ export default {
 .list-enter, .list-leave-to /* .list-leave-active em versões anteriores a 2.1.8 */ {
   opacity: 0;
   transform: translateY(300px);
+}
+
+@media screen and (min-width: 600px) {
+  .list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 </style>
